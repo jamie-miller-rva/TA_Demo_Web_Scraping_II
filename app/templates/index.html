@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mars Web Scraping Demo Page</title>
+
+    <!-- Add Bootstrap CSS file -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- <link rel="stylesheet" href="../static/style.css"> -->
+</head>
+
+<body>
+    <div class="container">
+        <!-- Start of Jumbotron -->
+        <div class="jumbotron text-center">
+
+            <!--  Start of Title-and-button-->
+            <h1>Mission to Mars</h1>
+            <!-- Add button for scrapping that goes to route: /scrape and actives the scrape script-->
+            <a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a>
+            <!-- End of Title-and-button -->
+
+        </div>
+        <!-- End of Jumbotron -->
+
+        <!-- Start of news-and-paragraph from https://mars.nasa.gov/news/ -->
+        <div class="row">
+            <div class="col-md-12 news-and-paragraph">
+                <div class="media">
+                    <!-- makes use of the following classes: media and media-body which covers the entire page-->
+                    <div class="media-body">
+                        <h4>Latest Mars News</h4>
+
+                        <h3 class="media-heading">{{ mars.news_title }}</h3>
+                        <p>{{ mars.news_paragraph }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of news-and-paragraph -->
+
+        <!-- Start of image-and-facts  -->
+        <!-- (JPL featured image from https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars -->
+        <!-- (Mars Facts table from https://space-facts.com/mars/ -->
+        <div class="row featured-image">
+            <div class="col-md-8">
+                <h3>Featured Mars Image</h3>
+
+                <img src="{{mars.featured_image | default('static/images/PIA18811_hires.jpg', true) }}"
+                    class="img-fluid" alt="Featured Mars Image" />
+            </div>
+
+            <div class="col-md-4">
+                <div class="row text center mars-facts-table">
+                    <h4>Mars Facts</h4>
+                    {{ mars.facts | safe }}
+                </div>
+            </div>
+        </div>
+        <!-- End of image-and-facts -->
+
+        <!-- Start of mars-hemispheres from https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars -->
+        <!-- but don't use comments with percentages as it seems to cause errors -->
+
+        <div class="mars-hemispheres">
+            <h2 class="text-center">Mars Hemispheres</h2>
+            <hr>
+        </div>
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-2">
+                <div class="col mb-4">
+                    {% for hemisphere in mars.hemispheres %}
+                    <div class="card md-auto">
+
+                        <div class="card-body">
+                            <img src="{{hemisphere.img_url | default('static/images/error.png', true)}}"
+                                class="card-img-top" alt="Mars Hemisphere">
+
+                            <p class="card-footer">
+                            <h5>{{hemisphere.title}}</h5>
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- End of mars-hemispheres -->
+
+            <!-- Start of Footer Using Fixed Bottom navbar -->
+            <footer class="container footer">
+                <div class="col-md-12 text-center">
+                    <span>Mars Web Scrapping Demo: Lead Analyst - Jamie Miller - Last scraped:
+                        {{mars.last_modified}}</span>
+                    <a class="github-link" href="https://github.com/jamie-miller-rva/TA_Demo_Web_Scrapping_II"> Public
+                        Github
+                        Respository Link</a>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+
+        <!-- Bootstrap JQuery, Popp.js bundle -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
+
+</body>
+
+</html>
