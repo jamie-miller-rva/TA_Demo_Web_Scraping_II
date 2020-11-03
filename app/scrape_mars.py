@@ -4,11 +4,9 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import datetime as dt
 
-from splinter import browser
-
 def scrape_all_content():
     # Initialize browser
-    browser = Browser("chrome", executable_path="static/chromedriver.exe", headless=True)
+    browser = Browser("chrome", executable_path="static/chromedriver.exe", headless=False)
 
     news_title, news_para = mars_news(browser)
 
@@ -109,7 +107,7 @@ def mars_facts():
     mars_facts_df.set_index('Description', inplace=True)
 
     # use method to_html to convert DataFrame to HTML and add bootstrap table templating
-    return mars_facts_df.to_html(classes="table table-striped")
+    return mars_facts_df.to_html(classes="table table-hover table-dark")
 
 def hemispheres(browser):
     # scrape the USGS site at https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars

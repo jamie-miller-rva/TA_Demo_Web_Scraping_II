@@ -20,7 +20,7 @@ def index():
 
 @app.route("/scrape")
 def scrape():
-    # create mars collection in MongoDB mars database
+#     # create mars collection in MongoDB mars database
     mars = mongo.db.mars
 
     # call the function scrape_all_content and assign to variable mars_data (used in scrape app)
