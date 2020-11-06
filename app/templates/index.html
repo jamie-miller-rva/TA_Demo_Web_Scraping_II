@@ -1,3 +1,18 @@
+<!--  
+ This html document makes use of several Bootstrap templates using bootstrap/4.0.0/css to include:
+ container - see https://getbootstrap.com/docs/4.5/layout/overview/#containers
+ jumbotron - see https://getbootstrap.com/docs/4.5/components/jumbotron/
+ btn (button) - see https://getbootstrap.com/docs/4.5/components/buttons/#button-tags
+ media - see https://getbootstrap.com/docs/4.5/components/media-object/
+ cards - see https://getbootstrap.com/docs/4.5/components/card/
+
+ All styling was accomplished through Bootstrap using styling to include:
+ text-center see https://getbootstrap.com/docs/4.5/utilities/text/#text-alignment
+ mt-1 (margin top .25 see https://getbootstrap.com/docs/4.5/utilities/spacing/)
+
+ Within the html document, double brackets are added to reserve space for data (from a MongoDB collection):
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,9 +29,9 @@
 <body>
     <div class="container">
         <!-- Start of Jumbotron -->
-        <div class="jumbotron text-center">
+        <div class="jumbotron text-center mt-2">
             <!--  Start of Title-and-button-->
-            <h1>Mission to Mars</h1>
+            <h1 class="text-primary">Mission to Mars</h1>
             <!-- Add button for scrapping that goes to route: /scrape and actives the scrape script-->
             <a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a>
             <!-- End of Title-and-button -->
@@ -26,12 +41,15 @@
         <!-- Start of news-and-paragraph from https://mars.nasa.gov/news/ -->
         <div class="row">
             <div class="col-md-12">
-                <div class="media mt-1 mb-2">
+                <div class="card">
                     <!-- makes use of the following classes: media and media-body which covers the entire page-->
-                    <div class="media-body">
-                        <h4>Latest Mars News</h4>
-                        <h3>{{ mars.news_title }}</h3>
-                        <p>{{ mars.news_paragraph }}</p>
+                    <div class="media mt-1 mb-2">
+                        <img src="{{ mars.news_image_src | safe}} " class="img-fluid m-2" alt="Mars news imgage">
+                        <div class="media-body m-1 p-1">
+                            <h4 class="text-primary">Latest Mars News</h4>
+                            <h3>{{ mars.news_title }}</h3>
+                            <p>{{ mars.news_paragraph }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -43,41 +61,56 @@
         <!-- (Mars Facts table from https://space-facts.com/mars/ -->
         <div class="row featured-image">
 
-            <div class="col-md-8">
-                <h3>Featured Mars Image</h3>
-                <img src="{{mars.featured_image | default('static/images/PIA18811_hires.jpg', true) }}"
-                    class="img-fluid" alt="Featured Mars Image" />
+            <div class="col-md-7">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary text-left">Featured Mars Image</h4>
+                        <h5 class="card-title text-left">{{ mars.featured_image_title }}</h5>
+
+                        <!-- load featured image from MongoDB, if not available load default featured image in images folder -->
+                        <!-- note: the "| safe" turns off an automatic escaping feature except for values explicitly marked as safe (by using the |safe filter). -->
+                        <img src="{{mars.featured_image | safe }}" class="img-fluid" alt="Featured Mars Image" />
+                    </div>
+                </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="row text center mars-facts-table">
-                    <h4>Mars Facts</h4>
+            <div class="col-md-5">
+                <div class="row text center mars-facts-table ml-1 mt-1 pt-2">
+                    <h4 class="text-primary mt-3">Mars Facts</h4>
+                    <!-- note: the "| safe" turns off an automatic escaping feature except for values explicitly marked as safe (by using the |safe filter). -->
                     {{ mars.facts | safe }}
                 </div>
             </div>
+
         </div>
         <!-- End of image-and-facts -->
 
-        <!-- Start of mars-hemispheres from https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars -->
+        <!-- Start of mars-hemispheres -->
+        <!-- scrape from https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars -->
         <!-- Note: don't use comments with percentages as it seems to cause errors -->
+
         <div class="container mars-hemispheres">
-            <h2 class="text-center mt-2">Mars Hemispheres</h2>
+            <h2 class="text-center text-primary font-weight-bold mt-2">Mars Hemispheres</h2>
             <hr>
         </div>
 
         <div class="row">
+            <!-- iterate through all four hemispheres and assign resulting img_url and hemisphere title to a Bootstrap card  -->
+            <!-- note: the "| safe" turns off an automatic escaping feature except for values explicitly marked as safe (by using the |safe filter). -->
             {% for hemisphere in mars.hemispheres %}
             <div class="col-md-6">
                 <div class="card text-center">
-                    <img src="{{hemisphere.img_url | default('static/images/error.png', true)}}" class="card-img-top"
-                        alt="Mars Hemisphere">
-                    <div class="card-footer">
+                    <img src="{{hemisphere.img_url | safe }}" class="card-img-top" alt="Mars Hemisphere">
+                    <div class="card-title font-weight-bold">
                         <h5>{{hemisphere.title}}</h5>
+                        <p class="card-text text-left font-weight-normal m-2 p-2"> {{ hemisphere.paragraph }}
+                        </p>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
+        
         <!-- End of mars-hemispheres -->
 
         <!-- Start of Footer -->
@@ -85,7 +118,8 @@
             <div class="card-body">
                 <span>Mars Web Scrapping Demo: Lead Analyst - Jamie Miller - Last scraped:
                     {{mars.last_modified}}</span>
-                <a class="github-link" href="https://github.com/jamie-miller-rva/TA_Demo_Web_Scrapping_II"> Public
+                <a class="github-link text-secondary"
+                    href="https://github.com/jamie-miller-rva/TA_Demo_Web_Scrapping_II"> Public
                     Github
                     Respository Link</a>
             </div>
@@ -93,7 +127,7 @@
         <!-- End of Footer -->
 
     </div>
-    </div>
+
 
     <!-- Bootstrap JQuery, Popp.js bundle -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
