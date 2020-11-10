@@ -161,7 +161,7 @@ def mars_facts():
     mars_facts_df.set_index('Description', inplace=True)
 
     # use method to_html to convert DataFrame to HTML and add bootstrap table templating
-    return mars_facts_df.to_html(classes="table table-sm table-hover table-dark m-1 p-1")
+    return mars_facts_df.to_html(classes="table table-sm table-bordered table-hover table-dark m-1 p-1")
 
 def hemispheres(browser):
     # scrape the USGS site at https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars

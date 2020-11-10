@@ -29,15 +29,10 @@
 <body>
     <div class="container">
         <!-- Start of Jumbotron -->
-        <div class="jumbotron text-center mt-2">
-            <!--  Start of Title-and-button-->
-            <h1 class="text-primary">Mission to Mars</h1>
-            <!-- Add button for scrapping that goes to route: /scrape and actives the scrape script-->
+        <div class="jumbotron text-center m-1 p-2">
+            <h1 class="text-primary font-weight-bold">Mission to Mars</h1>
             <a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a>
-            <!-- End of Title-and-button -->
         </div>
-        <!-- End of Jumbotron -->
-
         <!-- Start of news-and-paragraph from https://mars.nasa.gov/news/ -->
         <div class="row">
             <div class="col-md-12">
@@ -75,10 +70,10 @@
             </div>
 
             <div class="col-md-5">
-                <div class="row text center mars-facts-table ml-1 mt-1 pt-2">
+                <div class="row text center mars-facts-table m-1 pt-2">
                     <h4 class="text-primary mt-3">Mars Facts</h4>
                     <!-- note: the "| safe" turns off an automatic escaping feature except for values explicitly marked as safe (by using the |safe filter). -->
-                    {{ mars.facts | safe }}
+                    <div class="card">{{ mars.facts | safe }}</div>
                 </div>
             </div>
 
@@ -89,7 +84,7 @@
         <!-- scrape from https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars -->
         <!-- Note: don't use comments with percentages as it seems to cause errors -->
 
-        <div class="container mars-hemispheres">
+        <div class="container">
             <h2 class="text-center text-primary font-weight-bold mt-2">Mars Hemispheres</h2>
             <hr>
         </div>
@@ -101,8 +96,8 @@
             <div class="col-md-6">
                 <div class="card text-center">
                     <img src="{{hemisphere.img_url | safe }}" class="card-img-top" alt="Mars Hemisphere">
-                    <div class="card-title font-weight-bold">
-                        <h5>{{hemisphere.title}}</h5>
+                    <div class="card-title">
+                        <h5 class="font-weight-bold text-primary">{{hemisphere.title}}</h5>
                         <p class="card-text text-left font-weight-normal m-2 p-2"> {{ hemisphere.paragraph }}
                         </p>
                     </div>
@@ -110,7 +105,7 @@
             </div>
             {% endfor %}
         </div>
-        
+
         <!-- End of mars-hemispheres -->
 
         <!-- Start of Footer -->
